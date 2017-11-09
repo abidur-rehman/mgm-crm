@@ -1,0 +1,22 @@
+<rests xmlns="http://camel.apache.org/schema/spring">
+    <rest id="rest.mgm.crm.customer" path="/v1.0/mgm/crm/customer" produces="application/json">
+
+        <!-- Customer get all rest route -->
+        <get uri="/all">
+            <description>"Getting all customers"</description>
+            <responseMessage message="Customers successfully returned" code="200"/>
+            <to uri="bean:customerService?method=findAll" />
+        </get>
+        <!-- Customer get by id rest route -->
+        <get uri="/{id}" outType="uk.co.itsolutions.mgm.crm.persistence.Customer">
+            <description>"Getting customer"</description>
+            <responseMessage message="Customer successfully returned" code="200"/>
+            <to uri="bean:customerService?method=findCustomerById(${header.id})" />
+        </get>
+        <post type="uk.co.itsolutions.mgm.crm.persistence.Customer">
+            <description>"Creating customer"</description>
+            <responseMessage message="Customer successfully created" code="200"/>
+            <to uri="bean:customerService?method=save(${body})" />
+        </post>
+    </rest>
+</rests>
